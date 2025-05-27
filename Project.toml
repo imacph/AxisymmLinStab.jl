@@ -1,9 +1,21 @@
 name = "AxisymmLinStab"
-uuid = "9892f48d-3b50-4d6f-91e2-d13b368ad736"
-authors = ["Ian MacPherson"]
+uuid = "354a3cbf-0b36-49a0-ace3-180e41a6085a"
+authors = ["Ian-MacPherson"]
 version = "1.0.0-DEV"
 
+[deps]
+DelimitedFiles = "8bb1440f-4735-579b-a4ab-409b98df4dab"
+IterativeSolvers = "42fd0dbc-a981-5370-80f2-aaf504508153"
+LegendrePolynomials = "3db4a2ba-fc88-11e8-3e01-49c72059a882"
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
+
 [compat]
+DelimitedFiles = "1.9.1"
+IterativeSolvers = "0.9.4"
+LegendrePolynomials = "0.4.5"
+LinearAlgebra = "1.11.0"
+SparseArrays = "1.11.0"
 julia = "1.6.7"
 
 [extras]
