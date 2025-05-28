@@ -356,19 +356,68 @@ function save_stream_func(vecs::AbstractVector{ComplexF64},n_rad_max::Int64,rad_
     nothing
 end
 
-precompile(calc_theta_grid, (Int64,))
-precompile(calc_cart_grid, (Int64, Vector{Float64}, Int64, Vector{Float64}))
-precompile(calc_azim_vel, (Vector{ComplexF64}, Int64, Int64, Int64))
-precompile(calc_azim_vel, (Vector{Float64}, Int64, Int64, Int64))
-precompile(calc_stream_func, (Vector{ComplexF64}, Int64, Int64, Int64))
-precompile(calc_stream_func, (Vector{Float64}, Int64, Int64, Int64))
-precompile(calc_lsq_stream_func, (Vector{ComplexF64}, Int64, Vector{Float64}, Int64, Int64))
-precompile(calc_lsq_stream_func, (Vector{Float64}, Int64, Vector{Float64}, Int64, Int64))
-precompile(calc_kinetic_energy, (Vector{Float64}, Int64, Int64, Int64, Float64))
-precompile(calc_colat_vel, (Vector{Float64}, Int64, Vector{Float64}, Int64, Int64))
-precompile(calc_rad_vel, (Vector{Float64}, Int64, Vector{Float64}, Int64, Int64))
-precompile(save_azim_vel, (Vector{ComplexF64}, Int64, Float64, Int64, Int64))
-precompile(save_azim_vel, (Vector{Float64}, Int64, Float64, Int64, Int64))
-precompile(save_lsq_stream_func, (Vector{ComplexF64}, Int64, Float64, Int64, Int64))
-precompile(save_stream_func, (Vector{ComplexF64}, Int64, Float64, Int64, Int64))
 
+
+function save_stream_func(vecs::AbstractVector{ComplexF64},n_rad_max::Int64,rad_ratio::Float64,n_leg_max::Int64,n_theta_max::Int64, directory::String)
+
+    cd(directory)
+    stream_func_arr,theta_pts = calc_stream_func(vecs,n_rad_max,n_leg_max,n_theta_max)
+    r_i,r_o,rad_pts = calc_rad_pts(n_rad_max,rad_ratio)
+    ss,zz = calc_cart_grid(n_rad_max,rad_pts,n_theta_max,theta_pts)
+
+    writedlm("s_func_real.txt",real(stream_func_arr))
+    writedlm("s_func_imag.txt",imag(stream_func_arr))
+
+    writedlm("ss.txt",ss)
+    writedlm("zz.txt",zz)
+
+    nothing
+end
+
+function save_stream_func(vecs::AbstractVector{Float64},n_rad_max::Int64,rad_ratio::Float64,n_leg_max::Int64,n_theta_max::Int64, directory::String)
+
+    cd(directory)
+    stream_func_arr,theta_pts = calc_stream_func(vecs,n_rad_max,n_leg_max,n_theta_max)
+    r_i,r_o,rad_pts = calc_rad_pts(n_rad_max,rad_ratio)
+    ss,zz = calc_cart_grid(n_rad_max,rad_pts,n_theta_max,theta_pts)
+
+    writedlm("s_func_real.txt",real(stream_func_arr))
+    writedlm("s_func_imag.txt",imag(stream_func_arr))
+
+    writedlm("ss.txt",ss)
+    writedlm("zz.txt",zz)
+
+    nothing
+end
+
+function save_azim_vel(vecs::AbstractVector{ComplexF64},n_rad_max::Int64,rad_ratio::Float64,n_leg_max::Int64,n_theta_max::Int64, directory::String)
+
+    cd(directory)
+    azim_vel_arr,theta_pts = calc_azim_vel(vecs,n_rad_max,n_leg_max,n_theta_max)
+    r_i,r_o,rad_pts = calc_rad_pts(n_rad_max,rad_ratio)
+    ss,zz = calc_cart_grid(n_rad_max,rad_pts,n_theta_max,theta_pts)
+
+    writedlm("v_phi_real.txt",real(azim_vel_arr))
+    writedlm("v_phi_imag.txt",imag(azim_vel_arr))
+
+    writedlm("ss.txt",ss)
+    writedlm("zz.txt",zz)
+
+    nothing
+end
+
+function save_azim_vel(vecs::AbstractVector{Float64},n_rad_max::Int64,rad_ratio::Float64,n_leg_max::Int64,n_theta_max::Int64, directory::String)
+    cd(directory)
+
+    azim_vel_arr,theta_pts = calc_azim_vel(vecs,n_rad_max,n_leg_max,n_theta_max)
+    r_i,r_o,rad_pts = calc_rad_pts(n_rad_max,rad_ratio)
+    ss,zz = calc_cart_grid(n_rad_max,rad_pts,n_theta_max,theta_pts)
+
+    writedlm("v_phi_real.txt",real(azim_vel_arr))
+    writedlm("v_phi_imag.txt",imag(azim_vel_arr))
+
+    writedlm("ss.txt",ss)
+    writedlm("zz.txt",zz)
+
+    nothing
+end
