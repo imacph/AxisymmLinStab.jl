@@ -1,4 +1,5 @@
 
+
 function prep_time_step(n_rad_max::Int64,n_leg_max::Int64,rad_ratio::Float64,Ekman::Float64,freq::Float64)
 
     if iseven(n_leg_max)
@@ -58,6 +59,54 @@ function time_step(dt::Float64,n_dt::Int64,Re::Float64,prep_input::Tuple)
 
         #vec_t2 = ( mat_G+dt*mat_val) \ (2*time_matsp*vec_t1-0.5*time_matsp*vec_t0)
         vec_t2 = gmres!(vec_t2,mat_G+dt*mat_val,2*time_matsp*vec_t1-0.5*time_matsp*vec_t0,Pl=precond)
+
+        
+        vec_t0 = vec_t1
+        
+        vec_t1 = vec_t2
+        
+        t += dt
+        vec_ave += vec_t2/n_dt
+        
+        
+        KE_array[i] = calc_kinetic_energy(vec_t2, n_rad_max, n_leg_max, n_leg_max, rad_ratio)
+        
+        
+    end
+
+
+    
+    return vec_ave,KE_array
+end
+
+
+function time_step(dt::Float64,n_dt::Int64,Re::Float64,prep_input::Tuple,to::TimerOutput)
+
+    diffusion_matsp,coriolis_matsp,time_matsp,bc_matsp,coupling_mat1,coupling_mat0,coupling_mat2,Ekman,freq,n_rad_max,n_leg_max,rad_ratio = prep_input
+
+    vec_t0 = zeros(Float64,n_rad_max*n_leg_max)
+    vec_t1 = zeros(Float64,n_rad_max*n_leg_max)
+    vec_t2 = zeros(Float64,n_rad_max*n_leg_max)
+
+    t::Float64 = 0
+
+    epsi::Float64 = Re * Ekman^(1/2)
+    
+    mat_G = 1.5*time_matsp + dt*(coriolis_matsp-Ekman*diffusion_matsp) + bc_matsp
+
+    vec_ave = zeros(Float64,n_rad_max*n_leg_max)
+    vec_t0[n_rad_max-1] = epsi
+    vec_t1[n_rad_max-1] = epsi
+
+    KE_array = zeros(Float64,n_dt)
+
+    precond = factorize(mat_G)
+    for i=1:n_dt
+        
+        mat_val = real(exp(1im*freq*t)*coupling_mat1+exp(2im*freq*t)*coupling_mat2*epsi+coupling_mat0*epsi)*epsi
+
+        #vec_t2 = ( mat_G+dt*mat_val) \ (2*time_matsp*vec_t1-0.5*time_matsp*vec_t0)
+        @timeit to "time step" (vec_t2 = gmres!(vec_t2,mat_G+dt*mat_val,2*time_matsp*vec_t1-0.5*time_matsp*vec_t0,Pl=precond))
 
         
         vec_t0 = vec_t1

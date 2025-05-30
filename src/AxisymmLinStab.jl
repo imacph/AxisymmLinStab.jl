@@ -2,7 +2,7 @@ module AxisymmLinStab
 
 using IterativeSolvers
 using LinearAlgebra
-
+using TimerOutputs
 include("ZerothOrder.jl")
 
 precompile(calc_rad_pts, (Int64, Float64))
@@ -36,6 +36,11 @@ precompile(save_azim_vel, (Vector{ComplexF64}, Int64, Float64, Int64, Int64))
 precompile(save_azim_vel, (Vector{Float64}, Int64, Float64, Int64, Int64))
 precompile(save_lsq_stream_func, (Vector{ComplexF64}, Int64, Float64, Int64, Int64))
 precompile(save_stream_func, (Vector{ComplexF64}, Int64, Float64, Int64, Int64))
+precompile(save_stream_func, (Vector{Float64}, Int64, Float64, Int64, Int64,String))
+precompile(save_stream_func, (Vector{Float64}, Int64, Float64, Int64, Int64, String))
+precompile(save_azim_vel, (Vector{ComplexF64}, Int64, Float64, Int64, Int64, String))
+precompile(save_azim_vel, (Vector{Float64}, Int64, Float64, Int64, Int64, String))
+
 
 include("Coupling.jl")
 
@@ -49,5 +54,5 @@ include("time_stepping.jl")
 
 precompile(prep_time_step,(Int64,Int64,Float64,Float64,Float64))
 precompile(time_step,(Float64,Int64,Float64,Tuple))   
-
+precompile(time_step,(Float64,Int64,Float64,Tuple,TimerOutput))
 end
