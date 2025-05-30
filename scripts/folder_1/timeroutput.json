@@ -1,0 +1,27 @@
+{
+    "total_time_ns": 6720815000,
+    "total_allocated_bytes": 19634902744,
+    "time_ns": 0,
+    "n_calls": 0,
+    "allocated_bytes": 0,
+    "inner_timers": {
+        "time step": {
+            "total_time_ns": 0,
+            "total_allocated_bytes": 0,
+            "time_ns": 1049731200,
+            "n_calls": 10,
+            "allocated_bytes": 439229120,
+            "inner_timers": {
+            }
+        },
+        "prep_input": {
+            "total_time_ns": 0,
+            "total_allocated_bytes": 0,
+            "time_ns": 5671083800,
+            "n_calls": 1,
+            "allocated_bytes": 19195673624,
+            "inner_timers": {
+            }
+        }
+    }
+}

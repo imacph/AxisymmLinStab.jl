@@ -360,64 +360,64 @@ end
 
 function save_stream_func(vecs::AbstractVector{ComplexF64},n_rad_max::Int64,rad_ratio::Float64,n_leg_max::Int64,n_theta_max::Int64, directory::String)
 
-    cd(directory)
+    
     stream_func_arr,theta_pts = calc_stream_func(vecs,n_rad_max,n_leg_max,n_theta_max)
     r_i,r_o,rad_pts = calc_rad_pts(n_rad_max,rad_ratio)
     ss,zz = calc_cart_grid(n_rad_max,rad_pts,n_theta_max,theta_pts)
 
-    writedlm("s_func_real.txt",real(stream_func_arr))
-    writedlm("s_func_imag.txt",imag(stream_func_arr))
+    writedlm(directory*"/s_func_real.txt",real(stream_func_arr))
+    writedlm(directory*"/s_func_imag.txt",imag(stream_func_arr))
 
-    writedlm("ss.txt",ss)
-    writedlm("zz.txt",zz)
+    writedlm(directory*"/ss.txt",ss)
+    writedlm(directory*"/zz.txt",zz)
 
     nothing
 end
 
 function save_stream_func(vecs::AbstractVector{Float64},n_rad_max::Int64,rad_ratio::Float64,n_leg_max::Int64,n_theta_max::Int64, directory::String)
 
-    cd(directory)
+    
     stream_func_arr,theta_pts = calc_stream_func(vecs,n_rad_max,n_leg_max,n_theta_max)
     r_i,r_o,rad_pts = calc_rad_pts(n_rad_max,rad_ratio)
     ss,zz = calc_cart_grid(n_rad_max,rad_pts,n_theta_max,theta_pts)
 
-    writedlm("s_func_real.txt",real(stream_func_arr))
-    writedlm("s_func_imag.txt",imag(stream_func_arr))
+    writedlm(directory*"/s_func_real.txt",real(stream_func_arr))
+    writedlm(directory*"/s_func_imag.txt",imag(stream_func_arr))
 
-    writedlm("ss.txt",ss)
-    writedlm("zz.txt",zz)
+    writedlm(directory*"/ss.txt",ss)
+    writedlm(directory*"/zz.txt",zz)
 
     nothing
 end
 
 function save_azim_vel(vecs::AbstractVector{ComplexF64},n_rad_max::Int64,rad_ratio::Float64,n_leg_max::Int64,n_theta_max::Int64, directory::String)
 
-    cd(directory)
+    
     azim_vel_arr,theta_pts = calc_azim_vel(vecs,n_rad_max,n_leg_max,n_theta_max)
     r_i,r_o,rad_pts = calc_rad_pts(n_rad_max,rad_ratio)
     ss,zz = calc_cart_grid(n_rad_max,rad_pts,n_theta_max,theta_pts)
 
-    writedlm("v_phi_real.txt",real(azim_vel_arr))
-    writedlm("v_phi_imag.txt",imag(azim_vel_arr))
+    writedlm(directory*"/v_phi_real.txt",real(azim_vel_arr))
+    writedlm(directory*"/v_phi_imag.txt",imag(azim_vel_arr))
 
-    writedlm("ss.txt",ss)
-    writedlm("zz.txt",zz)
+    writedlm(directory*"/ss.txt",ss)
+    writedlm(directory*"/zz.txt",zz)
 
     nothing
 end
 
 function save_azim_vel(vecs::AbstractVector{Float64},n_rad_max::Int64,rad_ratio::Float64,n_leg_max::Int64,n_theta_max::Int64, directory::String)
-    cd(directory)
+    
 
     azim_vel_arr,theta_pts = calc_azim_vel(vecs,n_rad_max,n_leg_max,n_theta_max)
     r_i,r_o,rad_pts = calc_rad_pts(n_rad_max,rad_ratio)
     ss,zz = calc_cart_grid(n_rad_max,rad_pts,n_theta_max,theta_pts)
 
-    writedlm("v_phi_real.txt",real(azim_vel_arr))
-    writedlm("v_phi_imag.txt",imag(azim_vel_arr))
+    writedlm(directory*"/v_phi_real.txt",real(azim_vel_arr))
+    writedlm(directory*"/v_phi_imag.txt",imag(azim_vel_arr))
 
-    writedlm("ss.txt",ss)
-    writedlm("zz.txt",zz)
+    writedlm(directory*"/ss.txt",ss)
+    writedlm(directory*"/zz.txt",zz)
 
     nothing
 end

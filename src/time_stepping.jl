@@ -117,7 +117,7 @@ function time_step(dt::Float64,n_dt::Int64,Re::Float64,prep_input::Tuple,to::Tim
         vec_ave += vec_t2/n_dt
         
         
-        KE_array[i] = calc_kinetic_energy(vec_t2, n_rad_max, n_leg_max, n_leg_max, rad_ratio)
+        @timeit to "calc KE" (KE_array[i] = calc_kinetic_energy(vec_t2, n_rad_max, n_leg_max, n_leg_max, rad_ratio))
         
         
     end

@@ -1,6 +1,6 @@
 using CSV,DataFrames,DelimitedFiles
 using AxisymmLinStab
-
+using JSON3
 using TimerOutputs
 
 # Create a TimerOutput, this is the main type that keeps track of everything.
@@ -33,4 +33,9 @@ AxisymmLinStab.save_stream_func(vecs*(1+0im),n_rad_max,rad_ratio,n_leg_max,n_leg
 AxisymmLinStab.save_azim_vel(vecs,n_rad_max,rad_ratio,n_leg_max,n_leg_max*3,directory)
 
 writedlm(directory*"/KE_array.txt",KE_array)
-print(to)
+
+
+
+open(directory*"/timeroutput.json", "w") do io
+    JSON3.pretty(io, JSON3.write(TimerOutputs.todict(to)))
+end
