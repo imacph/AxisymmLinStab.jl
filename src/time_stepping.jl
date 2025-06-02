@@ -58,7 +58,7 @@ function time_step(dt::Float64,n_dt::Int64,Re::Float64,prep_input::Tuple)
         mat_val = real(exp(1im*freq*t)*coupling_mat1+exp(2im*freq*t)*coupling_mat2*epsi+coupling_mat0*epsi)*epsi
 
         #vec_t2 = ( mat_G+dt*mat_val) \ (2*time_matsp*vec_t1-0.5*time_matsp*vec_t0)
-        vec_t2 = gmres!(vec_t2,mat_G+dt*mat_val,2*time_matsp*vec_t1-0.5*time_matsp*vec_t0,Pl=precond)
+        vec_t2 = bicgstabl!(vec_t2,mat_G+dt*mat_val,2*time_matsp*vec_t1-0.5*time_matsp*vec_t0,Pl=precond)
 
         
         vec_t0 = vec_t1
@@ -101,7 +101,7 @@ function time_step(min_dt::Float64,n_dt::Int64,Re::Float64,prep_input::Tuple,to:
 
     KE_array = zeros(Float64,n_dt)
 
-    precond = factorize(mat_G)
+    precond = lu(mat_G)
 
     coupling_mat1_re = real(coupling_mat1)*epsi
     coupling_mat1_im = imag(coupling_mat1)*epsi
@@ -122,8 +122,8 @@ function time_step(min_dt::Float64,n_dt::Int64,Re::Float64,prep_input::Tuple,to:
         #   mat_val = real(exp(1im*freq*t)*coupling_mat1+exp(2im*freq*t)*coupling_mat2*epsi+coupling_mat0*epsi)*epsi
         
 
-        #vec_t2 = ( mat_G+dt*mat_val) \ (2*time_matsp*vec_t1-0.5*time_matsp*vec_t0)
-        @timeit to "time step" (vec_t2 = gmres!(vec_t2,mat_G+dt*mat_val,2*time_matsp*vec_t1-0.5*time_matsp*vec_t0,Pl=precond))
+        #@timeit to "time step" (vec_t2 = ( mat_G+dt*mat_val) \ (2*time_matsp*vec_t1-0.5*time_matsp*vec_t0))
+        @timeit to "time step" (vec_t2 = bicgstabl!(vec_t2,mat_G+dt*mat_val,2*time_matsp*vec_t1-0.5*time_matsp*vec_t0,Pl=precond))
 
         
         vec_t0 = vec_t1
