@@ -1,6 +1,6 @@
 {
-    "total_time_ns": 14842483700,
-    "total_allocated_bytes": 29497718904,
+    "total_time_ns": 29020424600,
+    "total_allocated_bytes": 59701002461,
     "time_ns": 0,
     "n_calls": 0,
     "allocated_bytes": 0,
@@ -8,27 +8,27 @@
         "time step": {
             "total_time_ns": 0,
             "total_allocated_bytes": 0,
-            "time_ns": 6067586700,
+            "time_ns": 14557892900,
             "n_calls": 200,
-            "allocated_bytes": 8727461376,
+            "allocated_bytes": 17997696110,
             "inner_timers": {
             }
         },
         "prep_input": {
             "total_time_ns": 0,
             "total_allocated_bytes": 0,
-            "time_ns": 5330482400,
+            "time_ns": 10033044800,
             "n_calls": 1,
-            "allocated_bytes": 19195674568,
+            "allocated_bytes": 39076823935,
             "inner_timers": {
             }
         },
         "calc KE": {
             "total_time_ns": 0,
             "total_allocated_bytes": 0,
-            "time_ns": 3444414600,
+            "time_ns": 4429486900,
             "n_calls": 200,
-            "allocated_bytes": 1574582960,
+            "allocated_bytes": 2626482416,
             "inner_timers": {
             }
         }

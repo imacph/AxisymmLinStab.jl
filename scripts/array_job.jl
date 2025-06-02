@@ -34,7 +34,7 @@ AxisymmLinStab.save_azim_vel(vecs,n_rad_max,rad_ratio,n_leg_max,n_leg_max*3,dire
 
 writedlm(directory*"/KE_array.txt",KE_array)
 
-
+println(to)
 
 open(directory*"/timeroutput.json", "w") do io
     JSON3.pretty(io, JSON3.write(TimerOutputs.todict(to)))

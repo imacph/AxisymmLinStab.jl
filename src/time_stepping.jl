@@ -80,8 +80,9 @@ function time_step(dt::Float64,n_dt::Int64,Re::Float64,prep_input::Tuple)
 end
 
 
-function time_step(dt::Float64,n_dt::Int64,Re::Float64,prep_input::Tuple,to::TimerOutput)
+function time_step(min_dt::Float64,n_dt::Int64,Re::Float64,prep_input::Tuple,to::TimerOutput)
 
+    dt = min_dt
     diffusion_matsp,coriolis_matsp,time_matsp,bc_matsp,coupling_mat1,coupling_mat0,coupling_mat2,Ekman,freq,n_rad_max,n_leg_max,rad_ratio = prep_input
 
     vec_t0 = zeros(Float64,n_rad_max*n_leg_max)
@@ -101,9 +102,25 @@ function time_step(dt::Float64,n_dt::Int64,Re::Float64,prep_input::Tuple,to::Tim
     KE_array = zeros(Float64,n_dt)
 
     precond = factorize(mat_G)
+
+    coupling_mat1_re = real(coupling_mat1)*epsi
+    coupling_mat1_im = imag(coupling_mat1)*epsi
+    
+    coupling_mat2_re = real(coupling_mat2)*epsi^2
+    coupling_mat2_im = imag(coupling_mat2)*epsi^2
+
+    coupling_mat0_re = real(coupling_mat0)*epsi^2
+    coupling_mat0_im = imag(coupling_mat0)*epsi^2
+    
+    # (A+iB) * (C+iD) = (AC-BD) + i(AD+BC)
+
     for i=1:n_dt
         
-        mat_val = real(exp(1im*freq*t)*coupling_mat1+exp(2im*freq*t)*coupling_mat2*epsi+coupling_mat0*epsi)*epsi
+        @timeit to "coupling update" (mat_val = (cos(freq*t)*coupling_mat1_re .- sin(freq*t)*coupling_mat1_im .+
+                    cos(2*freq*t)*coupling_mat2_re .- sin(2*freq*t)*coupling_mat2_im .+
+                    coupling_mat0_re .- coupling_mat0_im ))
+        #   mat_val = real(exp(1im*freq*t)*coupling_mat1+exp(2im*freq*t)*coupling_mat2*epsi+coupling_mat0*epsi)*epsi
+        
 
         #vec_t2 = ( mat_G+dt*mat_val) \ (2*time_matsp*vec_t1-0.5*time_matsp*vec_t0)
         @timeit to "time step" (vec_t2 = gmres!(vec_t2,mat_G+dt*mat_val,2*time_matsp*vec_t1-0.5*time_matsp*vec_t0,Pl=precond))
@@ -119,7 +136,9 @@ function time_step(dt::Float64,n_dt::Int64,Re::Float64,prep_input::Tuple,to::Tim
         
         @timeit to "calc KE" (KE_array[i] = calc_kinetic_energy(vec_t2, n_rad_max, n_leg_max, n_leg_max, rad_ratio))
         
-        
+        #dt = min(sqrt(2*KE_array[i])/(4/3*pi*(1-rad_ratio^3)/(1-rad_ratio)^3))
+        #println("Time step: ", dt)
+        #println((sqrt(2*KE_array[i])/(4/3*pi*(1-rad_ratio^3)/(1-rad_ratio)^3)))
     end
 
 
