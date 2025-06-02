@@ -123,7 +123,7 @@ function time_step(min_dt::Float64,n_dt::Int64,Re::Float64,prep_input::Tuple,to:
         
 
         #@timeit to "time step" (vec_t2 = ( mat_G+dt*mat_val) \ (2*time_matsp*vec_t1-0.5*time_matsp*vec_t0))
-        @timeit to "time step" (vec_t2 = bicgstabl!(vec_t2,mat_G+dt*mat_val,2*time_matsp*vec_t1-0.5*time_matsp*vec_t0,Pl=precond))
+        @timeit to "time step" (vec_t2 = bicgstabl!(vec_t2,mat_G+dt*mat_val,2*time_matsp*vec_t1-0.5*time_matsp*vec_t0,Pl=precond,abstol=1e-10,reltol=1e-8))
 
         
         vec_t0 = vec_t1
